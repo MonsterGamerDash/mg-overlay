@@ -24,6 +24,9 @@
     background: none;
     box-sizing: border-box;
     justify-content: center;
+
+    /* subtle whole-grid breathing motion */
+    animation: mg-grid-breathe 18s ease-in-out infinite;
 }
 
 /* Each outer card frame (up to 5 per row) */
@@ -44,6 +47,7 @@
 
     /* soft glow pulse */
     animation: mg-border-pulse 4s ease-in-out infinite;
+    transform-origin: center;
 }
 
 /* Slightly stagger glow timing so they don’t sync perfectly */
@@ -52,6 +56,15 @@
 }
 .custom-wrapper .event-border:nth-child(3n) {
     animation-delay: 1s;
+}
+
+/* Hover lift (just for you in the editor, viewers won’t really hover) */
+.custom-wrapper .event-border:hover {
+    transform: translateY(-2px) scale(1.02);
+    transition: transform 0.18s ease-out, box-shadow 0.18s ease-out;
+    box-shadow:
+        0 0 14px rgba(56, 189, 248, 0.9),
+        0 8px 18px rgba(0, 0, 0, 0.85);
 }
 
 /* Core inner event block */
@@ -228,7 +241,19 @@
         drop-shadow(0 0 18px #a855f7);
 }
 
-/* 🔥 Last row = special “big” events (last up to 5 cards) */
+/* 🌊 FIRST ROW – slightly brighter "entry row" */
+.custom-wrapper .items .event-border:nth-child(-n+5) .event {
+    background:
+        linear-gradient(135deg, rgba(15, 23, 42, 0.98), rgba(15, 23, 42, 0.9)),
+        radial-gradient(circle at top, rgba(56, 189, 248, 0.28) 0, transparent 60%);
+}
+
+/* MID ROWS – slightly calmer to push focus to top + bottom */
+.custom-wrapper .items .event-border:nth-child(n+6):nth-last-child(n+6) {
+    opacity: 0.92;
+}
+
+/* 🔥 LAST ROW = special “big” events (last up to 5 cards) */
 .custom-wrapper .items .event-border:nth-last-child(-n+5) {
     background: linear-gradient(135deg, #f97316, #facc15, #22c55e);
     box-shadow:
@@ -274,4 +299,13 @@
     0%   { transform: scale(1);   opacity: 1; }
     50%  { transform: scale(1.12); opacity: 1; }
     100% { transform: scale(1);   opacity: 1; }
+}
+
+/* Whole-grid breathing sway */
+@keyframes mg-grid-breathe {
+    0%   { transform: translateY(0); }
+    25%  { transform: translateY(-1.5px); }
+    50%  { transform: translateY(0); }
+    75%  { transform: translateY(1.5px); }
+    100% { transform: translateY(0); }
 }
