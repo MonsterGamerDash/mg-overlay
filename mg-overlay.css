@@ -1,12 +1,11 @@
-/* Main container for the overlay */
-.overlay-wrapper {
+/* Scope everything to the inner custom overlay */
+.custom-wrapper .overlay-wrapper {
     min-width: 800px;
     background:
         radial-gradient(circle at top, rgba(76, 29, 149, 0.45) 0, transparent 55%),
         radial-gradient(circle at bottom, rgba(34, 197, 235, 0.2) 0, transparent 60%),
         #050814;
-    /* extra top padding to give room for the label */
-    padding: 18px 8px 4px;
+    padding: 8px 10px;
     position: relative;
     border-radius: 12px;
     box-shadow:
@@ -16,71 +15,52 @@
     overflow: hidden;
 }
 
-/* MG header label INSIDE the bar now */
-.overlay-wrapper::before {
-    content: "MonsterGamer's Chaos Panel";
-    position: absolute;
-    top: 4px;                 /* stays inside the overlay */
-    left: 50%;                /* center horizontally */
-    transform: translateX(-50%);
-    
-    padding: 2px 14px;
-    border-radius: 999px;
-
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    font-size: 0.7rem;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: #e5e7eb;
-
-    background: radial-gradient(circle at top, #22c55e, #22d3ee);
-    box-shadow:
-        0 0 6px rgba(34, 197, 235, 0.9),
-        0 0 12px rgba(15, 23, 42, 0.9);
-    
-    white-space: nowrap;
-    z-index: 50;              /* 👈 ensure label is always above tiles */
-}
-
-
-/* Container holding all event elements – 5 columns, wraps into rows */
-.items {
+/* Main grid of events */
+.custom-wrapper .items {
     width: 100%;
     display: flex;
-    flex-wrap: wrap;          /* allow multiple rows */
-    position: relative;
-    background: none;
+    flex-wrap: wrap;   /* multiple rows */
     gap: 4px;
+    background: none;
     box-sizing: border-box;
-    border: none;
-    overflow: hidden;
-  	margin-top: 15px;
+    justify-content: center;
 }
 
-/* Outer border block for each event – 5 per row, perfect fit */
-.event-border {
+/* Each outer card frame (up to 5 per row) */
+.custom-wrapper .event-border {
     padding: 2px;
     background: linear-gradient(135deg, #22c55e, #22d3ee, #a855f7);
     border-radius: 10px;
     display: flex;
 
-    /* exact 5-column calculation with 4 gaps of 4px */
     flex: 1 0 calc((100% - (4px * 4)) / 5);
     max-width: calc((100% - (4px * 4)) / 5);
 
     box-shadow:
         0 0 10px rgba(34, 197, 235, 0.45),
         0 6px 12px rgba(0, 0, 0, 0.7);
+
     box-sizing: border-box;
+
+    /* soft glow pulse */
+    animation: mg-border-pulse 4s ease-in-out infinite;
 }
 
-/* Core event block with image, name, and trigger */
-.event {
+/* Slightly stagger glow timing so they don’t sync perfectly */
+.custom-wrapper .event-border:nth-child(2n) {
+    animation-delay: 0.5s;
+}
+.custom-wrapper .event-border:nth-child(3n) {
+    animation-delay: 1s;
+}
+
+/* Core inner event block */
+.custom-wrapper .event {
     background:
         linear-gradient(135deg, rgba(15, 23, 42, 0.97), rgba(15, 23, 42, 0.9)),
         radial-gradient(circle at top, rgba(34, 197, 235, 0.15) 0, transparent 55%);
     border-radius: 8px;
-    padding: 4px 4px 6px; /* thinner */
+    padding: 4px 4px 6px;
     width: 100%;
     height: auto;
     display: flex;
@@ -88,11 +68,11 @@
     position: relative;
     overflow: hidden;
     box-sizing: border-box;
-    border: 1px solid rgba(15, 23, 42, 0.9);
+    border: 1px solid rgba(15, 23, 42, 0.95);
 }
 
-/* Subtle MG scanline texture */
-.event::before {
+/* Scanline texture over event */
+.custom-wrapper .event::before {
     content: "";
     position: absolute;
     inset: 0;
@@ -102,12 +82,12 @@
     );
     background-size: 100% 3px;
     mix-blend-mode: soft-light;
-    opacity: 0.6;
+    opacity: 0.7;
     pointer-events: none;
 }
 
-/* Tiny HUD frame accent */
-.event::after {
+/* Thin inner HUD frame */
+.custom-wrapper .event::after {
     content: "";
     position: absolute;
     inset: 3px;
@@ -118,69 +98,36 @@
     pointer-events: none;
 }
 
-/* Alternating tint for tiles (base rows) */
-.event-border:nth-child(odd) .event {
-    background:
-        linear-gradient(135deg, rgba(15, 23, 42, 0.97), rgba(15, 23, 42, 0.9)),
-        radial-gradient(circle at top, rgba(34, 197, 235, 0.22) 0, transparent 55%);
-}
-
-.event-border:nth-child(even) .event {
-    background:
-        linear-gradient(135deg, rgba(15, 23, 42, 0.97), rgba(15, 23, 42, 0.9)),
-        radial-gradient(circle at bottom, rgba(168, 85, 247, 0.2) 0, transparent 55%);
-}
-
-/* 🔥 LAST ROW SPECIAL – big events (last up to 5 tiles) */
-.event-border:nth-last-child(-n+5) {
-    background: linear-gradient(135deg, #f97316, #facc15, #22c55e);
-    box-shadow:
-        0 0 16px rgba(249, 115, 22, 0.9),
-        0 0 28px rgba(250, 204, 21, 0.8),
-        0 8px 18px rgba(0, 0, 0, 0.95);
-}
-
-.event-border:nth-last-child(-n+5) .event {
-    border-color: rgba(250, 204, 21, 0.9);
-    background:
-        linear-gradient(135deg, rgba(30, 64, 175, 0.95), rgba(30, 64, 175, 0.9)),
-        radial-gradient(circle at top, rgba(250, 204, 21, 0.35) 0, transparent 55%);
-}
-
-/* Function name below the image */
-.function-name {
+/* Function name underneath */
+.custom-wrapper .function-name {
     width: 100%;
     text-align: center;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    font-size: 0.72rem;
+    font-size: 0.78rem;
     font-weight: 700;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
     color: #e5e7eb;
     text-shadow: 0 0 6px rgba(22, 163, 74, 0.9);
-    margin-top: 2px;
+    margin-top: 3px;
     padding-top: 2px;
     border-top: 1px solid rgba(148, 163, 184, 0.35);
+    word-break: break-word;
 }
 
-/* Wrapper for the main function image */
-.function-image-wrapper {
+/* Left side: function image wrapper */
+.custom-wrapper .function-image-wrapper {
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
     width: 50%;
-    max-height: 42px;
+    max-height: 40px;
     z-index: 2;
 }
 
-.function-icon-background {
-    position: absolute;
-    width: 100%;
-}
-
-/* Image representing the function */
-.function-icon {
+/* Function icon image */
+.custom-wrapper .function-icon {
     max-height: 40px;
     max-width: 100%;
     position: relative;
@@ -188,10 +135,13 @@
     filter:
         drop-shadow(0 0 4px rgba(34, 197, 235, 0.7))
         drop-shadow(0 0 8px rgba(88, 28, 135, 0.9));
+
+    /* floating animation */
+    animation: mg-icon-float 3.5s ease-in-out infinite;
 }
 
-/* Repetition indicator overlayed on the image */
-.repetition {
+/* Repetition badge (5x, 150x, etc.) */
+.custom-wrapper .repetition {
     position: absolute;
     left: 0;
     right: 0;
@@ -200,37 +150,56 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.6em;
+    font-size: 1.4em;
     color: #f9fafb;
-    font-weight: bold;
+    font-weight: 800;
     font-family: cursive;
     white-space: nowrap;
-    z-index: 2;
-    text-shadow: 0 0 8px rgba(15, 23, 42, 0.9),
-                 0 0 12px rgba(56, 189, 248, 0.85);
+    z-index: 3;
+    text-shadow:
+        0 0 8px rgba(15, 23, 42, 0.95),
+        0 0 12px rgba(56, 189, 248, 0.85);
+
+    /* gentle pulse */
+    animation: mg-rep-pulse 2.2s ease-in-out infinite;
 }
 
-/* Wrapper for the trigger icon (gift, like, etc.) */
-.trigger-img-wrapper {
+/* Trigger wrapper (right side, gift/like/etc.) */
+.custom-wrapper .trigger-img-wrapper {
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
     width: 50%;
-    max-height: 42px;
 }
 
-/* Icon image inside the trigger wrapper */
-.gift-icon {
-    max-height: 40px;
+/* Inner trigger icon wrapper */
+.custom-wrapper .trigger-icon-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+/* Gift / like / follow icon */
+.custom-wrapper .gift-icon {
+    max-height: 36px;
     max-width: 100%;
     filter:
         drop-shadow(0 0 4px rgba(34, 197, 235, 0.7))
         drop-shadow(0 0 8px rgba(88, 28, 135, 0.9));
 }
 
-/* Number or value overlay on top of trigger icon */
-.likes-number {
+/* “Not-gift” icons (like, follow, superfan) a tiny bit dimmer */
+.custom-wrapper .gift-icon.not-gift {
+    opacity: 0.85;
+}
+
+/* Likes / amount number on trigger icon */
+.custom-wrapper .likes-number,
+.custom-wrapper .coin-number {
     position: absolute;
     top: 0;
     bottom: 0;
@@ -239,20 +208,19 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     white-space: nowrap;
     text-align: center;
     font-weight: 700;
-    margin-top: -3px;
+    margin-top: -4px;
     text-shadow:
         0 0 6px rgba(15, 23, 42, 0.9),
         0 0 10px rgba(129, 140, 248, 0.95);
 }
 
-/* Special styling for coin values (larger text + MG glow) */
-.coin-number {
-    margin-bottom: -55%;
-    font-size: 1.7rem;
+/* Coins a bit larger and glowing */
+.custom-wrapper .coin-number {
+    font-size: 1.4rem;
     filter:
         drop-shadow(0 0 4px #22c55e)
         drop-shadow(0 0 8px #22c55e)
@@ -260,12 +228,50 @@
         drop-shadow(0 0 18px #a855f7);
 }
 
-/* Trigger wrapper to align icon/value in full space */
-.trigger-icon-wrapper {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    width: 100%;
-    height: 100%;
+/* 🔥 Last row = special “big” events (last up to 5 cards) */
+.custom-wrapper .items .event-border:nth-last-child(-n+5) {
+    background: linear-gradient(135deg, #f97316, #facc15, #22c55e);
+    box-shadow:
+        0 0 16px rgba(249, 115, 22, 0.9),
+        0 0 28px rgba(250, 204, 21, 0.85),
+        0 8px 18px rgba(0, 0, 0, 0.95);
+}
+
+.custom-wrapper .items .event-border:nth-last-child(-n+5) .event {
+    border-color: rgba(250, 204, 21, 0.9);
+    background:
+        linear-gradient(135deg, rgba(30, 64, 175, 0.95), rgba(30, 64, 175, 0.9)),
+        radial-gradient(circle at top, rgba(250, 204, 21, 0.35) 0, transparent 55%);
+}
+
+/* ===== Animations ===== */
+
+@keyframes mg-border-pulse {
+    0% {
+        box-shadow:
+            0 0 6px rgba(34, 197, 235, 0.35),
+            0 4px 8px rgba(0, 0, 0, 0.6);
+    }
+    50% {
+        box-shadow:
+            0 0 12px rgba(34, 197, 235, 0.9),
+            0 8px 16px rgba(0, 0, 0, 0.8);
+    }
+    100% {
+        box-shadow:
+            0 0 6px rgba(34, 197, 235, 0.35),
+            0 4px 8px rgba(0, 0, 0, 0.6);
+    }
+}
+
+@keyframes mg-icon-float {
+    0%   { transform: translateY(0); }
+    50%  { transform: translateY(-3px); }
+    100% { transform: translateY(0); }
+}
+
+@keyframes mg-rep-pulse {
+    0%   { transform: scale(1);   opacity: 1; }
+    50%  { transform: scale(1.12); opacity: 1; }
+    100% { transform: scale(1);   opacity: 1; }
 }
