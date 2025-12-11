@@ -19,17 +19,14 @@
 .custom-wrapper .items {
     width: 100%;
     display: flex;
-    flex-wrap: wrap;   /* multiple rows */
+    flex-wrap: wrap;
     gap: 4px;
     background: none;
     box-sizing: border-box;
     justify-content: center;
-
-    /* subtle whole-grid breathing motion */
-    animation: mg-grid-breathe 18s ease-in-out infinite;
 }
 
-/* Each outer card frame (up to 5 per row) */
+/* Each outer card frame (static glow only) */
 .custom-wrapper .event-border {
     padding: 2px;
     background: linear-gradient(135deg, #22c55e, #22d3ee, #a855f7);
@@ -44,18 +41,6 @@
         0 6px 12px rgba(0, 0, 0, 0.7);
 
     box-sizing: border-box;
-
-    /* soft glow pulse */
-    animation: mg-border-pulse 4s ease-in-out infinite;
-    transform-origin: center;
-}
-
-/* Slightly stagger glow timing so they don’t sync perfectly */
-.custom-wrapper .event-border:nth-child(2n) {
-    animation-delay: 0.5s;
-}
-.custom-wrapper .event-border:nth-child(3n) {
-    animation-delay: 1s;
 }
 
 /* Core inner event block */
@@ -75,7 +60,7 @@
     border: 1px solid rgba(15, 23, 42, 0.95);
 }
 
-/* Scanline texture over event */
+/* Scanline texture */
 .custom-wrapper .event::before {
     content: "";
     position: absolute;
@@ -102,13 +87,13 @@
     pointer-events: none;
 }
 
-/* ==== Top bubble label: MonsterGamer Chaos Panel ==== */
+/* Top bubble label */
 .custom-wrapper .overlay-wrapper::before {
     content: "MonsterGamer Chaos Panel";
     position: absolute;
     width: max-content;
     max-width: 100%;
-    margin: 0 auto 6px;  /* centers it & adds space above grid */
+    margin: 0 auto 6px;
     padding: 3px 18px;
     border-radius: 999px;
 
@@ -125,12 +110,10 @@
         0 0 6px rgba(34, 197, 235, 0.9),
         0 0 12px rgba(15, 23, 42, 0.9);
 
-    /* make sure it sits above the card glow */
-    position: relative;
     z-index: 5;
 }
 
-/* Function name underneath */
+/* Function name */
 .custom-wrapper .function-name {
     width: 100%;
     text-align: center;
@@ -147,7 +130,7 @@
     word-break: break-word;
 }
 
-/* Left side: function image wrapper */
+/* Function image wrapper */
 .custom-wrapper .function-image-wrapper {
     display: flex;
     align-items: center;
@@ -158,7 +141,7 @@
     z-index: 2;
 }
 
-/* Function icon image */
+/* Function icon */
 .custom-wrapper .function-icon {
     max-height: 40px;
     max-width: 100%;
@@ -167,12 +150,9 @@
     filter:
         drop-shadow(0 0 4px rgba(34, 197, 235, 0.7))
         drop-shadow(0 0 8px rgba(88, 28, 135, 0.9));
-
-    /* floating animation */
-    animation: mg-icon-float 3.5s ease-in-out infinite;
 }
 
-/* Repetition badge (5x, 150x, etc.) */
+/* Repetition number */
 .custom-wrapper .repetition {
     position: absolute;
     left: 0;
@@ -180,7 +160,7 @@
     bottom: 6%;
     margin: auto;
     display: flex;
-    align-: center;
+    align-items: center;
     justify-content: center;
     font-size: 1.4em;
     color: #f9fafb;
@@ -191,15 +171,12 @@
     text-shadow:
         0 0 8px rgba(15, 23, 42, 0.95),
         0 0 12px rgba(56, 189, 248, 0.85);
-
-    /* gentle pulse */
-    animation: mg-rep-pulse 2.2s ease-in-out infinite;
 }
 
-/* Trigger wrapper (right side, gift/like/etc.) */
+/* Trigger wrapper */
 .custom-wrapper .trigger-img-wrapper {
     display: flex;
-    align-: center;
+    align-items: center;
     justify-content: center;
     position: relative;
     width: 50%;
@@ -208,7 +185,7 @@
 /* Inner trigger icon wrapper */
 .custom-wrapper .trigger-icon-wrapper {
     display: flex;
-    align-: center;
+    align-items: center;
     justify-content: center;
     position: relative;
     width: 100%;
@@ -224,12 +201,12 @@
         drop-shadow(0 0 8px rgba(88, 28, 135, 0.9));
 }
 
-/* “Not-gift” icons (like, follow, superfan) a tiny bit dimmer */
+/* “Not-gift” icons slightly dimmer */
 .custom-wrapper .gift-icon.not-gift {
     opacity: 0.85;
 }
 
-/* Likes / amount number on trigger icon */
+/* Number over gift/trigger */
 .custom-wrapper .likes-number,
 .custom-wrapper .coin-number {
     position: absolute;
@@ -238,7 +215,7 @@
     margin: auto;
     color: #fff;
     display: flex;
-    align-: center;
+    align-items: center;
     justify-content: center;
     font-size: 1.1rem;
     white-space: nowrap;
@@ -250,7 +227,7 @@
         0 0 10px rgba(129, 140, 248, 0.95);
 }
 
-/* Coins a bit larger and glowing */
+/* Coins more prominent */
 .custom-wrapper .coin-number {
     font-size: 1.4rem;
     filter:
@@ -260,20 +237,14 @@
         drop-shadow(0 0 18px #a855f7);
 }
 
-/* 🌊 FIRST ROW – slightly brighter "entry row" */
+/* FIRST ROW highlight */
 .custom-wrapper .items .event-border:nth-child(-n+5) .event {
     background:
         linear-gradient(135deg, rgba(15, 23, 42, 0.98), rgba(15, 23, 42, 0.9)),
         radial-gradient(circle at top, rgba(56, 189, 248, 0.28) 0, transparent 60%);
 }
 
-/* MID ROWS – slightly calmer to push focus to top + bottom */
-.custom-wrapper .items .event-border:nth-child(n+6):nth-last-child(n+6) {
-    opacity: 0.92;
-}
-
-/* ===== FORCE LEGENDARY (LAST ROW) GLOW TO ALWAYS SHOW ===== */
-
+/* LEGENDARY ROW (last row) */
 .custom-wrapper .items .event-border:nth-last-child(-n+5) {
     background: linear-gradient(135deg, #f97316, #facc15, #22c55e) !important;
     box-shadow:
@@ -291,36 +262,4 @@
     box-shadow:
         inset 0 0 14px rgba(250, 204, 21, 0.7),
         inset 0 0 22px rgba(249, 115, 22, 0.6) !important;
-}
-
-/* ===== Animations ===== */
-
-@keyframes mg-border-pulse {
-    0% {
-        box-shadow:
-            0 0 6px rgba(34, 197, 235, 0.35),
-            0 4px 8px rgba(0, 0, 0, 0.6);
-    }
-    50% {
-        box-shadow:
-            0 0 12px rgba(34, 197, 235, 0.9),
-            0 8px 16px rgba(0, 0, 0, 0.8);
-    }
-    100% {
-        box-shadow:
-            0 0 6px rgba(34, 197, 235, 0.35),
-            0 4px 8px rgba(0, 0, 0, 0.6);
-    }
-}
-
-@keyframes mg-icon-float {
-    0%   { transform: translateY(0); }
-    50%  { transform: translateY(-3px); }
-    100% { transform: translateY(0); }
-}
-
-@keyframes mg-rep-pulse {
-    0%   { transform: scale(1);   opacity: 1; }
-    50%  { transform: scale(1.12); opacity: 1; }
-    100% { transform: scale(1);   opacity: 1; }
 }
